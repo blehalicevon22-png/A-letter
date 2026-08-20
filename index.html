@@ -1,95 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Letter 💌</title>
-
+    <title>Love Letter 💌</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             min-height: 100vh;
             background: #f7eafa;
-            font-family: Georgia, serif;
+            font-family: 'Georgia', serif;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
         }
-
         .container {
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        /* =========================
-           ENVELOPPE
-        ========================= */
-
-        .scene {
-            width: 320px;
-            height: 400px;
-            margin: auto;
             position: relative;
-            perspective: 1000px;
+            cursor: pointer;
         }
-
+        /* ENVELOPPE */
         .envelope {
-            position: absolute;
-            width: 100%;
+            position: relative;
+            width: 300px;
             height: 200px;
-            bottom: 0;
             background: #ff7b90;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             border-radius: 0 0 10px 10px;
         }
-
-        /* =========================
-           LA LETTRE
-        ========================= */
-
+        /* Rabat de l'enveloppe */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid #ff5e78;
+            transform-origin: top;
+            transition: transform 0.4s ease;
+            z-index: 3;
+        }
+        /* EFFET OUVERTURE */
+        .container.open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+        /* LA LETTRE PAPIER */
         .paper {
             position: absolute;
+            bottom: 5px;
+            left: 15px;
+            width: 270px;
+            height: 180px;
             background: #fffdf9;
             padding: 20px;
-            width: 280px;
-            min-height: 250px;
-            left: 20px;
-            top: 50px;
-            border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            text-align: left;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease;
+            z-index: 2;
         }
-
+        .container.open .paper {
+            transform: translateY(-120px);
+            height: 220px;
+            z-index: 4;
+        }
         .message {
             font-size: 16px;
             color: #4a4a4a;
-            line-height: 1.5;
+            line-height: 1.6;
+        }
+        /* PETIT COEUR DE FERMETURE */
+        .heart {
+            position: absolute;
+            top: 90px;
+            left: 135px;
+            width: 30px;
+            height: 30px;
+            background: #e63946;
+            transform: rotate(-45deg);
+            z-index: 4;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #e63946;
+            border-radius: 50%;
+        }
+        .heart::before { top: -15px; left: 0; }
+        .heart::after { left: 15px; top: 0; }
+        
+        .container.open .heart {
+            transform: scale(0) rotate(-45deg);
+            opacity: 0;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="scene">
-            <!-- La lettre papier -->
-            <div class="paper">
-                <div class="message">
-                    love,<br><br>
-                    take care | i love you so much<br><br>
-                </div>
-
-                </div>
+    <!-- Cliquez sur l'enveloppe pour l'ouvrir ! -->
+    <div class="container" onclick="this.classList.toggle('open')">
+        <div class="heart"></div>
+        <div class="paper">
+            <div class="message">
+                love,<br><br>
+                take care  i love you sooo much
             </div>
-            <!-- L'enveloppe -->
-            <div class="envelope"></div>
         </div>
+        <div class="envelope"></div>
     </div>
 
 </body>
