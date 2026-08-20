@@ -37,7 +37,7 @@
             border-radius: 0 0 10px 10px;
             z-index: 1;
         }
-        /* Devant de l'enveloppe */
+        /* Devant de l'enveloppe - CACHE LA LETTRE COMPLÈTEMENT */
         .envelope::after {
             content: '';
             position: absolute;
@@ -47,7 +47,7 @@
             height: 0;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            border-bottom: 100px solid #ff6984;
+            border-bottom: 115px solid #ff6984;
             z-index: 3;
             border-radius: 0 0 10px 10px;
         }
@@ -74,12 +74,12 @@
         /* LA LETTRE PAPIER */
         .paper {
             position: absolute;
-            bottom: 10px;
+            bottom: 15px;
             left: 15px;
             width: 270px;
-            height: 170px;
+            height: 165px;
             background: #fffdf9;
-            padding: 20px;
+            padding: 15px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: transform 0.5s ease, height 0.5s ease;
@@ -87,14 +87,14 @@
         }
         /* Animation quand on ouvre */
         .container.open .paper {
-            transform: translateY(-150px);
-            height: 250px;
+            transform: translateY(-140px);
+            height: 230px;
             z-index: 5;
         }
         .message {
-            font-size: 15px;
+            font-size: 14px;
             color: #4a4a4a;
-            line-height: 1.6;
+            line-height: 1.5;
         }
         /* PETIT COEUR DE FERMETURE */
         .heart {
@@ -131,8 +131,8 @@
         <div class="heart"></div>
         <div class="paper">
             <div class="message">
-                love,<br><br>
-                i was jst thinkin' abt u and wanted to try this and well ofc u alr know but u mean everything to me i love you sooo much 
+                love,<br>
+                was jst thinkin' abt u and wanted to try ts and well ofc u alr know but u mean everything to me i love you so much
             </div>
         </div>
         <div class="envelope"></div>
