@@ -133,7 +133,7 @@
         .heart-icon::before { top: -15px; left: 0; }
         .heart-icon::after { left: 15px; top: 0; }
         
-        /* Cache le coeur quand l'enveloppe s'ouvre */
+        /* Cache le cœur quand l'enveloppe s'ouvre */
         .scene.open .heart-icon {
             opacity: 0;
             transform: scale(0) rotate(-45deg);
@@ -180,14 +180,13 @@
 
     <div class="container">
         <div class="scene" id="letterScene">
-            <!-- etoile de décoration -->
-            <div class="star-icon"></div>
+            <!-- Cœur de décoration -->
+            <div class="heart-icon"></div>
             
             <div class="paper">
                 <div class="message">
                     love,<br><br>
-                 was jst thinkin' abt u and wanted to try ts and well ofc u alr know but u mean everything to me i love you so much
-                </div>
+                    was jst thinkin' abt u and wanted to try ts and well ofc u alr know but u mean everything to me i love you so much
                 </div>
             </div>
             <div class="envelope"></div>
@@ -198,7 +197,7 @@
             <button class="btn-close" onclick="document.getElementById('letterScene').classList.remove('open')">Close</button>
         </div>
 
-        <div class="subtitle">A little letter for you </div>
+        <div class="subtitle">A little letter just for you </div>
     </div>
 
 </body>
