@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Letter 💌</title>
+    <!-- Chargement de la jolie police d'écriture manuscrite -->
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +15,7 @@
         body {
             min-height: 100vh;
             background: #f7eafa;
-            font-family: 'Georgia', serif;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,9 +23,14 @@
         }
         .container {
             position: relative;
-            cursor: pointer;
+            width: 320px;
+            text-align: center;
+        }
+        .scene {
+            position: relative;
             width: 300px;
             height: 200px;
+            margin: 0 auto 30px auto;
         }
         /* ENVELOPPE DE FOND */
         .envelope {
@@ -37,7 +44,7 @@
             border-radius: 0 0 10px 10px;
             z-index: 1;
         }
-        /* Devant de l'enveloppe - CACHE LA LETTRE COMPLÈTEMENT */
+        /* Devant de l'enveloppe */
         .envelope::after {
             content: '';
             position: absolute;
@@ -47,7 +54,7 @@
             height: 0;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            border-bottom: 115px solid #ff6984;
+            border-bottom: 100px solid #ff6984;
             z-index: 3;
             border-radius: 0 0 10px 10px;
         }
@@ -67,75 +74,96 @@
             z-index: 4;
         }
         /* EFFET OUVERTURE RABAT */
-        .container.open .envelope::before {
+        .scene.open .envelope::before {
             transform: rotateX(180deg);
             z-index: 1;
         }
         /* LA LETTRE PAPIER */
         .paper {
             position: absolute;
-            bottom: 15px;
+            bottom: 10px;
             left: 15px;
             width: 270px;
-            height: 165px;
+            height: 170px;
             background: #fffdf9;
-            padding: 15px;
+            padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.5s ease, height 0.5s ease;
+            /* CACHÉ COMPLÈTEMENT AU DÉBUT */
+            opacity: 0;
+            transform: translateY(0);
+            transition: transform 0.5s ease, height 0.5s ease, opacity 0.3s ease;
             z-index: 2;
+            text-align: left;
         }
-        /* Animation quand on ouvre */
-        .container.open .paper {
-            transform: translateY(-140px);
+        /* Animation quand on clique sur OPEN */
+        .scene.open .paper {
+            opacity: 1;
+            transform: translateY(-145px);
             height: 230px;
             z-index: 5;
         }
+        /* STYLE DU MESSAGE ÉCRIT À LA MAIN */
         .message {
-            font-size: 14px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 26px; /* Plus grand pour que l'écriture soit très lisible */
             color: #4a4a4a;
-            line-height: 1.5;
+            line-height: 1.4;
         }
-        /* PETIT COEUR DE FERMETURE */
-        .heart {
-            position: absolute;
-            top: 85px;
-            left: 135px;
-            width: 30px;
-            height: 30px;
-            background: #e63946;
-            transform: rotate(-45deg);
-            z-index: 6;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+        /* BOUTONS COMPLÈTEMENT IDENTIQUES */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
         }
-        .heart::before, .heart::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #e63946;
-            border-radius: 50%;
+        button {
+            padding: 10px 25px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 110px;
         }
-        .heart::before { top: -15px; left: 0; }
-        .heart::after { left: 15px; top: 0; }
-        
-        .container.open .heart {
-            transform: scale(0) rotate(-45deg);
-            opacity: 0;
+        .btn-open {
+            background: #cc4452;
+            color: white;
+            border: none;
+        }
+        .btn-close {
+            background: #f7eafa;
+            color: #cc4452;
+            border: 2px solid #cc4452;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #b392ac;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" onclick="this.classList.toggle('open')">
-        <div class="heart"></div>
-        <div class="paper">
-            <div class="message">
-                love,<br>
-                was jst thinkin' abt u and wanted to try ts and well ofc u alr know but u mean everything to me i love you so much
+    <div class="container">
+        <!-- Zone de la lettre et enveloppe -->
+        <div class="scene" id="letterScene">
+            <div class="paper">
+                <div class="message">
+                    love,<br>
+                    was jst thinkin' abt u and wanted to try ts and well ofc u alr know but u mean everything to me i love you so much
+                </div>
             </div>
+            <div class="envelope"></div>
         </div>
-        <div class="envelope"></div>
+
+        <!-- Les boutons d'action -->
+        <div class="buttons">
+            <button class="btn-open" onclick="document.getElementById('letterScene').classList.add('open')">Open</button>
+            <button class="btn-close" onclick="document.getElementById('letterScene').classList.remove('open')">Close</button>
+        </div>
+
+        <div class="subtitle">A little letter just for you 💗</div>
     </div>
 
 </body>
