@@ -109,8 +109,8 @@
             color: #4a4a4a;
             line-height: 1.4;
         }
-        /* PETITE ÉTOILE DE DÉCORATION SUR L'ENVELOPPE */
-        .star-icon {
+        /* PETIT COEUR DE DÉCORATION SUR L'ENVELOPPE */
+        .heart-icon {
             position: absolute;
             top: 85px;
             left: 135px;
@@ -122,7 +122,7 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .star-icon::before, .star-icon::after {
+        .heart-icon::before, .heart-icon::after {
             content: '';
             position: absolute;
             width: 30px;
@@ -130,11 +130,11 @@
             background: #e63946;
             border-radius: 50%;
         }
-        .star-icon::before { top: -15px; left: 0; }
-        .star-icon::after { left: 15px; top: 0; }
+        .heart-icon::before { top: -15px; left: 0; }
+        .heart-icon::after { left: 15px; top: 0; }
         
-        /* Cache l'étoile quand l'enveloppe s'ouvre */
-        .scene.open .star-icon {
+        /* Cache le coeur quand l'enveloppe s'ouvre */
+        .scene.open .heart-icon {
             opacity: 0;
             transform: scale(0) rotate(-45deg);
             pointer-events: none;
@@ -185,8 +185,9 @@
             
             <div class="paper">
                 <div class="message">
-                    twin,<br><br>
-                 u're the bestttt friend everrrr tysm for being my friend u're goated
+                    love,<br><br>
+                 was jst thinkin' abt u and wanted to try ts and well ofc u alr know but u mean everything to me i love you so much
+                </div>
                 </div>
             </div>
             <div class="envelope"></div>
