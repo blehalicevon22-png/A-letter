@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Letter 💌</title>
-    <!-- Chargement de la jolie police d'écriture manuscrite -->
+    <!-- Une police manuscrite beaucoup plus fine, moderne et élégante -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         * {
@@ -86,10 +86,9 @@
             width: 270px;
             height: 170px;
             background: #fffdf9;
-            padding: 20px;
+            padding: 18px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            /* CACHÉ COMPLÈTEMENT AU DÉBUT */
             opacity: 0;
             transform: translateY(0);
             transition: transform 0.5s ease, height 0.5s ease, opacity 0.3s ease;
@@ -99,23 +98,55 @@
         /* Animation quand on clique sur OPEN */
         .scene.open .paper {
             opacity: 1;
-            transform: translateY(-145px);
-            height: 230px;
+            transform: translateY(-155px);
+            height: 245px;
             z-index: 5;
         }
-        /* STYLE DU MESSAGE ÉCRIT À LA MAIN */
+        /* NOUVEAU STYLE DU MESSAGE */
         .message {
-            font-family: 'Great Vibes', cursive;
-            font-size: 26px; /* Plus grand pour que l'écriture soit très lisible */
+            font-family: 'Dancing Script', cursive;
+            font-size: 21px;
             color: #4a4a4a;
             line-height: 1.4;
         }
-        /* BOUTONS COMPLÈTEMENT IDENTIQUES */
+        /* PETIT COEUR DE DÉCORATION SUR L'ENVELOPPE */
+        .heart-icon {
+            position: absolute;
+            top: 85px;
+            left: 135px;
+            width: 30px;
+            height: 30px;
+            background: #e63946;
+            transform: rotate(-45deg);
+            z-index: 6;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .heart-icon::before, .heart-icon::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #e63946;
+            border-radius: 50%;
+        }
+        .heart-icon::before { top: -15px; left: 0; }
+        .heart-icon::after { left: 15px; top: 0; }
+        
+        /* Cache le cœur quand l'enveloppe s'ouvre */
+        .scene.open .heart-icon {
+            opacity: 0;
+            transform: scale(0) rotate(-45deg);
+            pointer-events: none;
+        }
+        /* ZONE DES BOUTONS - z-index augmenté pour réparer le clic */
         .buttons {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-bottom: 15px;
+            position: relative;
+            z-index: 10;
         }
         button {
             padding: 10px 25px;
@@ -140,30 +171,33 @@
         .subtitle {
             font-size: 13px;
             color: #b392ac;
+            position: relative;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Zone de la lettre et enveloppe -->
         <div class="scene" id="letterScene">
+            <!-- Cœur de décoration -->
+            <div class="heart-icon"></div>
+            
             <div class="paper">
                 <div class="message">
-                    love,<br>
+                    love,<br><br>
                     was jst thinkin' abt u and wanted to try ts and well ofc u alr know but u mean everything to me i love you so much
                 </div>
             </div>
             <div class="envelope"></div>
         </div>
 
-        <!-- Les boutons d'action -->
         <div class="buttons">
             <button class="btn-open" onclick="document.getElementById('letterScene').classList.add('open')">Open</button>
             <button class="btn-close" onclick="document.getElementById('letterScene').classList.remove('open')">Close</button>
         </div>
 
-        <div class="subtitle">A little letter just for you 💗</div>
+        <div class="subtitle">A little letter for you </div>
     </div>
 
 </body>
