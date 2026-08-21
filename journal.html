@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Notebook 📖</title>
-    <!-- Une jolie police d'écriture manuscrite fine et moderne -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         * {
@@ -14,150 +13,201 @@
         }
         body {
             min-height: 100vh;
-            background: #fcf4f9;
+            background: #faf6f0; /* Fond de l'écran blanc cassé */
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            flex-direction: column;
         }
         .instruction {
-            position: absolute;
-            top: 40px;
+            margin-bottom: 25px;
             font-size: 14px;
-            color: #b392ac;
+            color: #8c7662;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
         }
-        /* LE CARNET */
-        .notebook {
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        /* STRUCTURE DU LIVRE OUVERT (DOUBLE PAGE) */
+        .book {
             position: relative;
-            width: 320px;
-            height: 420px;
+            width: 600px;
+            height: 400px;
             perspective: 1500px;
+            transition: transform 0.5s;
         }
-        /* STRUCTURE D'UNE PAGE */
+        /* PAGE INDIVIDUELLE BEIGE */
         .page {
+            position: absolute;
+            width: 300px;
+            height: 100%;
+            top: 0;
+            right: 0;
+            background: #f2e6d8; /* Couleur beige pour les pages intérieures */
+            padding: 30px;
+            box-shadow: inset 4px 0 10px rgba(0,0,0,0.08), 5px 5px 15px rgba(0,0,0,0.1);
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        /* Face avant et arrière de chaque feuille */
+        .front, .back {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            background: #fffdf9;
             padding: 35px 25px;
-            border-radius: 0 15px 15px 0;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-            transform-origin: left center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.6s;
-            cursor: pointer;
+            backface-visibility: hidden;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
         }
-        /* Ligne de reliure sur la gauche pour faire effet carnet */
-        .page::before {
+        .back {
+            transform: rotateY(180deg);
+            background: #f2e6d8;
+            border-radius: 15px 0 0 15px;
+            box-shadow: inset -4px 0 10px rgba(0,0,0,0.08);
+        }
+        .front {
+            border-radius: 0 15px 15px 0;
+        }
+        /* EFFET DE LIGNES DE CAHIER VINTAGE */
+        .front::before, .back::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 12px;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #e8dfd5, transparent);
+            background: linear-gradient(rgba(0,0,0,0) 95%, #d9cbba 95%);
+            background-size: 100% 28px;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 1;
         }
-        /* STYLE DU TEXTE MANUSCRIT */
+        /* COUVERTURES RIGIDES ÉPURÉES SANS TEXTE */
+        .cover-front {
+            background: #b59f88 !important;
+            border: 4px solid #9c856e;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+        .cover-back {
+            background: #b59f88 !important;
+            border: 4px solid #9c856e;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+        /* STYLE DU TEXTE */
         .text {
             font-family: 'Dancing Script', cursive;
-            font-size: 23px;
-            color: #4a4a4a;
+            font-size: 22px;
+            color: #3b3127; /* Couleur d'écriture marron foncé très douce */
             line-height: 1.5;
-            margin-top: 10px;
+            z-index: 2;
         }
         .page-number {
             position: absolute;
-            bottom: 20px;
-            right: 25px;
-            font-size: 14px;
-            color: #b392ac;
+            bottom: 15px;
+            font-size: 12px;
+            color: #8c7662;
+            z-index: 2;
         }
-        /* L'effet quand on clique pour tourner la page */
+        .front .page-number { right: 20px; }
+        .back .page-number { left: 20px; }
+
+        /* ANIMATION ROTATION */
         .page.flipped {
             transform: rotateY(-180deg);
-            z-index: 1 !important;
         }
-        /* Gestion initiale de l'ordre des calques pour 6 pages */
-        #p1 { z-index: 7; }
-        #p2 { z-index: 6; }
-        #p3 { z-index: 5; }
-        #p4 { z-index: 4; }
-        #p5 { z-index: 3; }
-        #p6 { z-index: 2; }
+        /* Ordre d'empilement des pages */
+        #page1 { z-index: 4; }
+        #page2 { z-index: 3; }
+        #page3 { z-index: 2; }
+        #page4 { z-index: 1; }
+
+        /* Ajustement mobile paysage automatique */
+        @media (max-width: 650px) {
+            .book {
+                transform: scale(0.65);
+            }
+            .instruction::after {
+                content: ' (Turn your screen sideways 🔄)';
+                display: block;
+                font-size: 11px;
+                margin-top: 5px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="instruction">Tap a page to flip it ✨</div>
 
-    <div class="notebook">
+    <div class="book">
         
-        <!-- PAGE 1 -->
-        <div class="page" id="p1" onclick="this.classList.add('flipped')">
-            <div class="text">
-                “I don’t really remember when exactly it started"
+        <!-- FEUILLE 1 : COUVERTURE AVANT VIERGE & PHRASE 1 -->
+        <div class="page" id="page1" onclick="this.classList.add('flipped')">
+            <div class="front cover-front">
+                <!-- Vide et épuré -->
             </div>
-            <div class="page-number">1</div>
+            <div class="back">
+                <div class="text">“I don’t really remember when exactly it started"</div>
+                <div class="page-number">1</div>
+            </div>
         </div>
 
-        <!-- PAGE 2 -->
-        <div class="page" id="p2" onclick="this.classList.add('flipped')">
-            <div class="text">
-                “But since then, i remember being much happier than i had ever been before i met you”
+        <!-- FEUILLE 2 : PHRASE 2 & PHRASE 3 -->
+        <div class="page" id="page2" onclick="this.classList.add('flipped')">
+            <div class="front">
+                <div class="text">“But since then, i remember being much happier than i had ever been before i met you”</div>
+                <div class="page-number">2</div>
             </div>
-            <div class="page-number">2</div>
+            <div class="back">
+                <div class="text">“All the smiles, laughter, and good times and moreee i've had with you..”</div>
+                <div class="page-number">3</div>
+            </div>
         </div>
 
-        <!-- PAGE 3 -->
-        <div class="page" id="p3" onclick="this.classList.add('flipped')">
-            <div class="text">
-                “All the smiles, laughter, and good times and moreee i've had with you..”
+        <!-- FEUILLE 3 : PHRASE 4 & PHRASE 5 -->
+        <div class="page" id="page3" onclick="this.classList.add('flipped')">
+            <div class="front">
+                <div class="text">“I owe all of this to you and i don’t know how to thank you”</div>
+                <div class="page-number">4</div>
             </div>
-            <div class="page-number">3</div>
+            <div class="back">
+                <div class="text">“I’ll never say it enough but im truly grateful to you”</div>
+                <div class="page-number">5</div>
+            </div>
         </div>
 
-        <!-- PAGE 4 -->
-        <div class="page" id="p4" onclick="this.classList.add('flipped')">
-            <div class="text">
-                “I owe all of this to you and i don’t know how to thank you”
+        <!-- FEUILLE 4 : PHRASE 6 & COUVERTURE ARRIÈRE VIERGE -->
+        <div class="page" id="page4" onclick="resetBook()">
+            <div class="front">
+                <div class="text" style="font-size: 26px; text-align: center; margin-top: 40px;">“I deeply love you”</div>
+                <div class="page-number">6</div>
             </div>
-            <div class="page-number">4</div>
-        </div>
-
-        <!-- PAGE 5 -->
-        <div class="page" id="p5" onclick="this.classList.add('flipped')">
-            <div class="text">
-                “I’ll never say it enough but im truly grateful to you”
+            <div class="back cover-back">
+                <!-- Vide et épuré -->
             </div>
-            <div class="page-number">5</div>
-        </div>
-
-        <!-- PAGE 6 (Cliquer dessus réinitialise tout le carnet à la fin de la vidéo) -->
-        <div class="page" id="p6" onclick="resetJournal()">
-            <div class="text" style="font-size: 26px; text-align: center; margin-top: 50px;">
-                “I deeply love you” 
-            </div>
-            <div class="page-number">6</div>
         </div>
 
     </div>
 
     <script>
-        // Fonction pour fermer proprement toutes les pages de la fin vers le début
-        function resetJournal() {
-            const pages = ['p5', 'p4', 'p3', 'p2', 'p1'];
-            pages.forEach((id, index) => {
-                setTimeout(() => {
-                    document.getElementById(id).classList.remove('flipped');
-                }, index * 100);
-            });
+        function resetBook() {
+            setTimeout(() => { document.getElementById('page3').classList.remove('flipped'); }, 100);
+            setTimeout(() => { document.getElementById('page2').classList.remove('flipped'); }, 300);
+            setTimeout(() => { document.getElementById('page1').classList.remove('flipped'); }, 500);
         }
     </script>
 
