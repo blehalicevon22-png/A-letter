@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Notebook 📖</title>
+    <!-- Une jolie police d'écriture manuscrite fine et moderne -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            background: #fcf4f9;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .instruction {
+            position: absolute;
+            top: 40px;
+            font-size: 14px;
+            color: #b392ac;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* LE CARNET */
+        .notebook {
+            position: relative;
+            width: 320px;
+            height: 420px;
+            perspective: 1500px;
+        }
+        /* STRUCTURE D'UNE PAGE */
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: #fffdf9;
+            padding: 35px 25px;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            transform-origin: left center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.6s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        /* Ligne de reliure sur la gauche pour faire effet carnet */
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 100%;
+            background: linear-gradient(to right, #e8dfd5, transparent);
+        }
+        /* STYLE DU TEXTE MANUSCRIT */
+        .text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 23px;
+            color: #4a4a4a;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 25px;
+            font-size: 14px;
+            color: #b392ac;
+        }
+        /* L'effet quand on clique pour tourner la page */
+        .page.flipped {
+            transform: rotateY(-180deg);
+            z-index: 1 !important;
+        }
+        /* Gestion initiale de l'ordre des calques pour 6 pages */
+        #p1 { z-index: 7; }
+        #p2 { z-index: 6; }
+        #p3 { z-index: 5; }
+        #p4 { z-index: 4; }
+        #p5 { z-index: 3; }
+        #p6 { z-index: 2; }
+    </style>
+</head>
+<body>
+
+    <div class="instruction">Tap a page to flip it ✨</div>
+
+    <div class="notebook">
+        
+        <!-- PAGE 1 -->
+        <div class="page" id="p1" onclick="this.classList.add('flipped')">
+            <div class="text">
+                “I don’t really remember when exactly it started"
+            </div>
+            <div class="page-number">1</div>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="page" id="p2" onclick="this.classList.add('flipped')">
+            <div class="text">
+                “But since then, i remember being much happier than i had ever been before i met you”
+            </div>
+            <div class="page-number">2</div>
+        </div>
+
+        <!-- PAGE 3 -->
+        <div class="page" id="p3" onclick="this.classList.add('flipped')">
+            <div class="text">
+                “All the smiles, laughter, and good times and moreee i've had with you..”
+            </div>
+            <div class="page-number">3</div>
+        </div>
+
+        <!-- PAGE 4 -->
+        <div class="page" id="p4" onclick="this.classList.add('flipped')">
+            <div class="text">
+                “I owe all of this to you and i don’t know how to thank you”
+            </div>
+            <div class="page-number">4</div>
+        </div>
+
+        <!-- PAGE 5 -->
+        <div class="page" id="p5" onclick="this.classList.add('flipped')">
+            <div class="text">
+                “I’ll never say it enough but im truly grateful to you”
+            </div>
+            <div class="page-number">5</div>
+        </div>
+
+        <!-- PAGE 6 (Cliquer dessus réinitialise tout le carnet à la fin de la vidéo) -->
+        <div class="page" id="p6" onclick="resetJournal()">
+            <div class="text" style="font-size: 26px; text-align: center; margin-top: 50px;">
+                “I deeply love you” 
+            </div>
+            <div class="page-number">6</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Fonction pour fermer proprement toutes les pages de la fin vers le début
+        function resetJournal() {
+            const pages = ['p5', 'p4', 'p3', 'p2', 'p1'];
+            pages.forEach((id, index) => {
+                setTimeout(() => {
+                    document.getElementById(id).classList.remove('flipped');
+                }, index * 100);
+            });
+        }
+    </script>
+
+</body>
+</html>
