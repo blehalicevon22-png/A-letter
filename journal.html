@@ -13,7 +13,7 @@
         }
         body {
             min-height: 100vh;
-            background: #faf6f0; /* Fond de l'écran blanc cassé */
+            background: #121212; /* Le fond passe en noir épuré */
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -24,7 +24,7 @@
         .instruction {
             margin-bottom: 25px;
             font-size: 14px;
-            color: #8c7662;
+            color: #a69280;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: bold;
@@ -35,12 +35,13 @@
             50% { opacity: 1; }
             100% { opacity: 0.6; }
         }
-        /* STRUCTURE DU LIVRE OUVERT (DOUBLE PAGE) */
+        /* STRUCTURE DU LIVRE */
         .book {
             position: relative;
             width: 600px;
             height: 400px;
             perspective: 1500px;
+            transform: translateX(0);
             transition: transform 0.5s;
         }
         /* PAGE INDIVIDUELLE BEIGE */
@@ -50,9 +51,8 @@
             height: 100%;
             top: 0;
             right: 0;
-            background: #f2e6d8; /* Couleur beige pour les pages intérieures */
-            padding: 30px;
-            box-shadow: inset 4px 0 10px rgba(0,0,0,0.08), 5px 5px 15px rgba(0,0,0,0.1);
+            background: #f2e6d8;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
             transform-origin: left center;
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -65,7 +65,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            padding: 35px 25px;
+            padding: 40px 30px;
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
@@ -79,6 +79,7 @@
         }
         .front {
             border-radius: 0 15px 15px 0;
+            box-shadow: inset 4px 0 10px rgba(0,0,0,0.08);
         }
         /* EFFET DE LIGNES DE CAHIER VINTAGE */
         .front::before, .back::before {
@@ -98,20 +99,20 @@
         .cover-front {
             background: #b59f88 !important;
             border: 4px solid #9c856e;
-            justify-content: center !important;
-            align-items: center !important;
         }
         .cover-back {
             background: #b59f88 !important;
             border: 4px solid #9c856e;
-            justify-content: center !important;
-            align-items: center !important;
+        }
+        /* Enlever les lignes sur les couvertures */
+        .cover-front::before, .cover-back::before {
+            display: none;
         }
         /* STYLE DU TEXTE */
         .text {
             font-family: 'Dancing Script', cursive;
             font-size: 22px;
-            color: #3b3127; /* Couleur d'écriture marron foncé très douce */
+            color: #3b3127;
             line-height: 1.5;
             z-index: 2;
         }
@@ -129,85 +130,113 @@
         .page.flipped {
             transform: rotateY(-180deg);
         }
-        /* Ordre d'empilement des pages */
-        #page1 { z-index: 4; }
-        #page2 { z-index: 3; }
-        #page3 { z-index: 2; }
-        #page4 { z-index: 1; }
+        
+        /* GESTION DE L'EMPILEMENT DES PAGES POUR LE SENS DE LECTURE */
+        #page1 { z-index: 7; }
+        #page2 { z-index: 6; }
+        #page3 { z-index: 5; }
+        #page4 { z-index: 4; }
+        #page5 { z-index: 3; }
+        #page6 { z-index: 2; }
+        #page7 { z-index: 1; }
 
         /* Ajustement mobile paysage automatique */
         @media (max-width: 650px) {
             .book {
-                transform: scale(0.65);
-            }
-            .instruction::after {
-                content: ' (Turn your screen sideways 🔄)';
-                display: block;
-                font-size: 11px;
-                margin-top: 5px;
+                transform: scale(0.7);
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="instruction">Tap a page to flip it ✨</div>
+    <div class="instruction">Tap the right page to flip it </div>
 
-    <div class="book">
+    <div class="book" id="myBook">
         
-        <!-- FEUILLE 1 : COUVERTURE AVANT VIERGE & PHRASE 1 -->
-        <div class="page" id="page1" onclick="this.classList.add('flipped')">
-            <div class="front cover-front">
-                <!-- Vide et épuré -->
-            </div>
+        <!-- FEUILLE 1 : Couverture avant (Vierge) -> Ouverture sur page Gauche Vierge / Droite Phrase 1 -->
+        <div class="page" id="page1" onclick="this.classList.add('flipped'); document.getElementById('myBook').style.transform='translateX(150px)';">
+            <div class="front cover-front"></div>
             <div class="back">
-                <div class="text">“I don’t really remember when exactly it started"</div>
-                <div class="page-number">1</div>
+                <!-- Page de gauche restant vide au début, parfait ! -->
             </div>
         </div>
 
-        <!-- FEUILLE 2 : PHRASE 2 & PHRASE 3 -->
+        <!-- FEUILLE 2 : Phrase 1 (à droite au début) -> Tourne pour révéler Phrase 2 à droite -->
         <div class="page" id="page2" onclick="this.classList.add('flipped')">
+            <div class="front">
+                <div class="text">“I don’t really remember when exactly it started"</div>
+                <div class="page-number">1</div>
+            </div>
+            <div class="back">
+                <!-- Gauche vide pendant qu'on lit à droite -->
+            </div>
+        </div>
+
+        <!-- FEUILLE 3 : Phrase 2 -> Tourne pour révéler Phrase 3 à droite -->
+        <div class="page" id="page3" onclick="this.classList.add('flipped')">
             <div class="front">
                 <div class="text">“But since then, i remember being much happier than i had ever been before i met you”</div>
                 <div class="page-number">2</div>
             </div>
             <div class="back">
-                <div class="text">“All the smiles, laughter, and good times and moreee i've had with you..”</div>
-                <div class="page-number">3</div>
+                <!-- Gauche vide -->
             </div>
         </div>
 
-        <!-- FEUILLE 3 : PHRASE 4 & PHRASE 5 -->
-        <div class="page" id="page3" onclick="this.classList.add('flipped')">
+        <!-- FEUILLE 4 : Phrase 3 -> Tourne pour révéler Phrase 4 à droite -->
+        <div class="page" id="page4" onclick="this.classList.add('flipped')">
+            <div class="front">
+                <div class="text">“All the smiles, laughter, and good times and moreee i've had with you..”</div>
+                <div class="page-number">3</div>
+            </div>
+            <div class="back">
+                <!-- Gauche vide -->
+            </div>
+        </div>
+
+        <!-- FEUILLE 5 : Phrase 4 -> Tourne pour révéler Phrase 5 à droite -->
+        <div class="page" id="page5" onclick="this.classList.add('flipped')">
             <div class="front">
                 <div class="text">“I owe all of this to you and i don’t know how to thank you”</div>
                 <div class="page-number">4</div>
             </div>
             <div class="back">
-                <div class="text">“I’ll never say it enough but im truly grateful to you”</div>
-                <div class="page-number">5</div>
+                <!-- Gauche vide -->
             </div>
         </div>
 
-        <!-- FEUILLE 4 : PHRASE 6 & COUVERTURE ARRIÈRE VIERGE -->
-        <div class="page" id="page4" onclick="resetBook()">
+        <!-- FEUILLE 6 : Phrase 5 -> Tourne pour révéler Phrase 6 à droite -->
+        <div class="page" id="page6" onclick="this.classList.add('flipped')">
+            <div class="front">
+                <div class="text">“I’ll never say it enough but im truly grateful to you”</div>
+                <div class="page-number">5</div>
+            </div>
+            <div class="back">
+                <!-- Gauche vide -->
+            </div>
+        </div>
+
+        <!-- FEUILLE 7 : Phrase 6 -> Tourne pour fermer sur la couverture arrière -->
+        <div class="page" id="page7" onclick="resetBook()">
             <div class="front">
                 <div class="text" style="font-size: 26px; text-align: center; margin-top: 40px;">“I deeply love you”</div>
                 <div class="page-number">6</div>
             </div>
-            <div class="back cover-back">
-                <!-- Vide et épuré -->
-            </div>
+            <div class="back cover-back"></div>
         </div>
 
     </div>
 
     <script>
         function resetBook() {
-            setTimeout(() => { document.getElementById('page3').classList.remove('flipped'); }, 100);
-            setTimeout(() => { document.getElementById('page2').classList.remove('flipped'); }, 300);
-            setTimeout(() => { document.getElementById('page1').classList.remove('flipped'); }, 500);
+            document.getElementById('myBook').style.transform='translateX(0)';
+            setTimeout(() => { document.getElementById('page6').classList.remove('flipped'); }, 100);
+            setTimeout(() => { document.getElementById('page5').classList.remove('flipped'); }, 200);
+            setTimeout(() => { document.getElementById('page4').classList.remove('flipped'); }, 300);
+            setTimeout(() => { document.getElementById('page3').classList.remove('flipped'); }, 400);
+            setTimeout(() => { document.getElementById('page2').classList.remove('flipped'); }, 500);
+            setTimeout(() => { document.getElementById('page1').classList.remove('flipped'); }, 600);
         }
     </script>
 
